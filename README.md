@@ -1,6 +1,6 @@
 # 📚 BookSales API (Laravel 10)
 
-Sebuah API sederhana untuk mengelola data buku dan penulis, dibangun menggunakan Laravel 10.
+Sebuah API sederhana untuk mengelola data buku dan penulis, dibangun menggunakan Laravel 12.
 
 ## 🚀 Fitur
 
