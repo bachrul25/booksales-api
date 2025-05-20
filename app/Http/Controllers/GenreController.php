@@ -2,96 +2,94 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Author;
+use App\Models\Genre;
 use Illuminate\Http\Request;
 
 use function Pest\Laravel\json;
 
-class AuthorController extends Controller
+class GenreController extends Controller
 {
     public function index()
     {
-        $authors = Author::all();
+        $genres = Genre::withCount('books')->get();
         return response()->json([
             'success' => true,
-            'data' => $authors
+            'data' => $genres
         ]);
     }
 
     public function show($id)
     {
-        $author = Author::with('books')->find($id);
+        $genre = Genre::with('books.author')->find($id);
 
-        if (!$author) {
+        if (!$genre) {
             return response()->json([
                 'success' => false,
-                'message' => 'Author not found'
+                'message' => 'Genre not found'
             ], 404);
         }
 
         return response()->json([
             'success' => true,
-            'data' => $author
+            'data' => $genre
         ]);
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:authors',
-            'bio' => 'nullable|string'
+            'name' => 'required|string|max:255|unique:genres',
+            'description' => 'nullable|string'
         ]);
 
-        $author = Author::create($validated);
+        $genre = Genre::create($validated);
 
         return response()->json([
             'success' => true,
-            'data' => $author
+            'data' => $genre
         ], 201);
     }
 
     public function update(Request $request, $id)
     {
-        $author = Author::find($id);
+        $genre = Genre::find($id);
 
-        if (!$author) {
+        if (!$genre) {
             return response()->json([
                 'success' => false,
-                'message' => 'Author not found'
+                'message' => 'Genre not found'
             ], 404);
         }
 
         $validated = $request->validate([
-            'name' => 'sometimes|string|max:255',
-            'email' => 'sometimes|email|unique:authors,email,' . $id,
-            'bio' => 'nullable|string'
+            'name' => 'sometimes|string|max:255|unique:genres,name,' . $id,
+            'description' => 'nullable|string'
         ]);
 
-        $author->update($validated);
+        $genre->update($validated);
 
         return response()->json([
             'success' => true,
-            'data' => $author
+            'data' => $genre
         ]);
     }
 
     public function destroy($id)
     {
-        $author = Author::find($id);
+        $genre = Genre::find($id);
 
-        if (!$author) {
+        if (!$genre) {
             return response()->json([
                 'success' => false,
-                'message' => 'Author not found'
+                'message' => 'Genre not found'
             ], 404);
         }
 
-        $author->delete();
+        $genre->delete();
 
         return response()->json([
             'success' => true,
-            'message' => 'Author deleted successfully'
+            'message' => 'Genre deleted successfully'
         ]);
     }
 }

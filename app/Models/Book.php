@@ -25,4 +25,11 @@ class Book extends Model
     {
         return $this->belongsTo(Author::class);
     }
+
+    // Tambahkan di dalam class Book
+    public function genres()
+    {
+        return $this->belongsToMany(Genre::class);
+    }
+
 }
