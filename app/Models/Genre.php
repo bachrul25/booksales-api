@@ -10,7 +10,10 @@ class Genre extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'description'];
+    // Nama tabel jika tidak sesuai konvensi Laravel
+    // protected $table = 'genres';
+
+    protected $fillable = ['name', 'description', 'slug'];
 
     protected static function boot()
     {
